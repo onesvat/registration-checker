@@ -16,6 +16,6 @@ class StartCommand extends Command
     public function handle($arguments)
     {
         $this->replyWithChatAction(['action' => Actions::TYPING]);
-        $this->replyWithMessage(['text' => 'Hello ' . $this->update->getMessage()->getFrom()->getUsername() . '! Please use /auth $USERNAME:$PASSWORD to auth']);
+        $this->replyWithMessage(['text' => 'Hello ' . $this->update->getMessage()->getFrom()->getUsername() . '! Please use /auth $USERNAME $PASSWORD to auth']);
     }
 }

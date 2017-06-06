@@ -16,6 +16,24 @@ class AuthCommand extends Command
     public function handle($arguments)
     {
         $this->replyWithChatAction(['action' => Actions::TYPING]);
-        $this->replyWithMessage(['text' => 'Hello ' . $this->update->getMessage()->getFrom()->getUsername() . '! Please use /auth $USERNAME:$PASSWORD to auth']);
+
+        list($username, $password) = explode(" ", $arguments);
+
+        $database_str = file_get_contents($_ENV['DATABASE_LOC']);
+
+        if ($database_str)
+            $database = json_decode(file_get_contents($_ENV['DATABASE_LOC']));
+        else
+            $database = [];
+
+        $database[$username] = [
+            'username' => $username,
+            'password' => $password,
+            'last_hash' => null
+        ];
+
+        file_put_contents($_ENV['DATABASE_LOC'], json_encode($database));
+
+        $this->replyWithMessage(['text' => 'Registered']);
     }
 }
