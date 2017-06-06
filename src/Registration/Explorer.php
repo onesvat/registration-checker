@@ -66,7 +66,13 @@ class Explorer
 
             $grades = ['spa' => 0, 'gpa' => 0, 'courses' => []];
 
-            foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element) {
+            try {
+                $elements = $dom->find('table', 1)->find("tr[class=recmenu]");
+            } catch (\Exception $e) {
+                return false;
+            }
+
+            foreach ($elements as $element) {
                 $course = str_replace("&nbsp;", "", $element->find("td", 0)->plaintext);
                 $grade = str_replace("&nbsp;", "", $element->find("td", 3)->plaintext);
 
