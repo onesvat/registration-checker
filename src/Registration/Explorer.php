@@ -67,7 +67,8 @@ class Explorer
             $grades = ['spa' => 0, 'gpa' => 0, 'courses' => []];
 
             try {
-                $elements = $dom->find('table', 1)->find("tr[class=recmenu]");
+                $table = $dom->find('table', 1);
+                $elements = $table->find("tr[class=recmenu]");
             } catch (\Exception $e) {
                 return false;
             }
