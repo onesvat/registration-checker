@@ -63,6 +63,8 @@ class Fetch
             'Connection: keep-alive'
         ];
 
+        curl_setopt($ch, CURLOPT_INTERFACE, "193.70.100.240");
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $output = curl_exec($ch);
