@@ -24,7 +24,7 @@ class GradesCommand extends Command
         else
             $database = [];
 
-        if (array_key_exists($this->update->getMessage()->getFrom()->getId(), $database)) {
+        if (!array_key_exists($this->update->getMessage()->getFrom()->getId(), $database)) {
             return $this->replyWithMessage(['text' => 'Please register first']);
         }
 
