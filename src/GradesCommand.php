@@ -20,7 +20,7 @@ class GradesCommand extends Command
         $database_str = file_get_contents($_ENV['DATABASE_LOC']);
 
         if ($database_str)
-            $database = json_decode(file_get_contents($_ENV['DATABASE_LOC']));
+            $database = json_decode(file_get_contents($_ENV['DATABASE_LOC']), true);
         else
             $database = [];
 
@@ -36,7 +36,7 @@ class GradesCommand extends Command
         curl_setopt($ch, CURLOPT_URL, "https://registration.boun.edu.tr/scripts/stuinflogin.asp");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
-            "user_name={$user->username}&user_pass={$user->password}");
+            "user_name={$user['username']}&user_pass={$user['password']}");
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 

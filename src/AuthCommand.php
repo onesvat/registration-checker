@@ -22,7 +22,7 @@ class AuthCommand extends Command
         $database_str = file_get_contents($_ENV['DATABASE_LOC']);
 
         if ($database_str)
-            $database = json_decode(file_get_contents($_ENV['DATABASE_LOC']));
+            $database = json_decode(file_get_contents($_ENV['DATABASE_LOC']), true);
         else
             $database = [];
 
