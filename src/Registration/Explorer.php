@@ -68,6 +68,8 @@ class Explorer
 
             try {
                 $table = $dom->find('table', 1);
+                if (!$table)
+                    return false;
                 $elements = $table->find("tr[class=recmenu]");
             } catch (\Exception $e) {
                 return false;
@@ -83,6 +85,8 @@ class Explorer
 
                 $grades['courses'][$course] = $grade;
             }
+
+            $dom->find("table", 2)->find("tr");
 
             return $grades;
         }
