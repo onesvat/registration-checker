@@ -70,10 +70,10 @@ class GradesCommand extends Command
                 $grade = "NA";
             }
 
-            $message .= $course . " " . $grade . "<br/>";
+            $message .= $course . " " . $grade . "\n";
         }
 
 
-        return $this->replyWithMessage(['text' => $message, 'parse_mode' => 'HTML']);
+        return $this->replyWithMessage(['text' => "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
     }
 }
