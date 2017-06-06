@@ -57,7 +57,12 @@ class Explorer
 
         if ($this->checkIfLogin($output)) {
 
-            $dom = HtmlDomParser::str_get_html($output);
+            try {
+                $dom = HtmlDomParser::str_get_html($output);
+            } catch (\Exception $e) {
+                return false;
+            }
+
 
             $grades = ['spa' => 0, 'gpa' => 0, 'courses' => []];
 

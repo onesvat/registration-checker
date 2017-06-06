@@ -20,6 +20,10 @@ foreach ($users as $user) {
     $explorer = new \Registration\Explorer($user['username'], $user['password']);
     $grades = $explorer->fetchGrades("2016/2017-2");
 
+    if ($grades === false) {
+        continue;
+    }
+
     $hash = md5(json_encode($grades));
 
     if ($user['last_hash'] == null) {
@@ -41,5 +45,5 @@ foreach ($users as $user) {
 
     echo $user['username'] . PHP_EOL;
 
-    sleep(mt_rand(5, 15));
+    sleep(mt_rand(1, 3));
 }
