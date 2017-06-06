@@ -8,4 +8,4 @@ $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
 
 $telegram = new Api($_ENV['TELEGRAM_KEY']);
-$telegram->setWebhook(['url' => '']);
+$telegram->setWebhook(['url' => $_ENV['TELEGRAM_WEBHOOK']]);
