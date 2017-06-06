@@ -51,6 +51,8 @@ class Explorer
 
     public function fetchGrades($semester)
     {
+        $this->login();
+
         $output = $this->fetch->get("http://registration.boun.edu.tr/scripts/stuinfgs.asp?donem=$semester");
 
         if ($this->checkIfLogin($output)) {
