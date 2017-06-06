@@ -40,7 +40,11 @@ foreach ($users as $user) {
             $message .= "\nSPA: " . $grades['spa'] . "\n";
             $message .= "GPA: " . $grades['gpa'];
 
-            $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
+            try {
+                $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
+            } catch (\Exception $e) {
+
+            }
 
             $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
         }
