@@ -103,7 +103,6 @@ class Explorer
             if (!$gpa_tr)
                 return $grades;
 
-
             $gpa_txt = $gpa_tr->find("td", 2);
 
             $spa = str_replace(["SPA:", ","], ["", "."], $spa_txt);

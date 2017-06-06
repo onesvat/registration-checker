@@ -46,6 +46,9 @@ class GradesCommand extends Command
             $message .= $course . " " . $grade . "\n";
         }
 
+        $message .= "SPA: " . $grades['spa'] . "\n";
+        $message .= "GPA: " . $grades['gpa'];
+
 
         return $this->replyWithMessage(['text' => "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
     }

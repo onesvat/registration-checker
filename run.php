@@ -37,6 +37,9 @@ foreach ($users as $user) {
                 $message .= $course . " " . $grade . "\n";
             }
 
+            $message .= "SPA: " . $grades['spa'] . "\n";
+            $message .= "GPA: " . $grades['gpa'];
+
             //$telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
 
             $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
