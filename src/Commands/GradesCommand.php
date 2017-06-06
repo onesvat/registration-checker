@@ -46,7 +46,7 @@ class GradesCommand extends Command
             $message .= $course . " " . $grade . "\n";
         }
 
-        $message .= "SPA: " . $grades['spa'] . "\n";
+        $message .= "\nSPA: " . $grades['spa'] . "\n";
         $message .= "GPA: " . $grades['gpa'];
 
 
