@@ -44,26 +44,30 @@ foreach ($database as $telegram_id => $user) {
     $output = curl_exec($ch);
     curl_close($ch);
 
-    if (md5($output) != $user['last_hash']) {
-        $dom = HtmlDomParser::str_get_html($output);
+    if ($user['last_hash'] == null) {
+        $database[$telegram_id]['last_hash'] = md5($output);
+    } else {
+        if (md5($output) != $user['last_hash']) {
+            $dom = HtmlDomParser::str_get_html($output);
 
-        $message = "";
+            $message = "";
 
-        foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element) {
-            $course = str_replace("&nbsp;", "", $element->find("td", 0)->plaintext);
-            $grade = str_replace("&nbsp;", "", $element->find("td", 3)->plaintext);
+            foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element) {
+                $course = str_replace("&nbsp;", "", $element->find("td", 0)->plaintext);
+                $grade = str_replace("&nbsp;", "", $element->find("td", 3)->plaintext);
 
-            if ($grade == "") {
-                $grade = "NA";
+                if ($grade == "") {
+                    $grade = "NA";
+                }
+
+                $message .= $course . " " . $grade . "\n";
             }
 
-            $message .= $course . " " . $grade . "\n";
+            $telegram = new Api($_ENV['TELEGRAM_KEY']);
+            $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
+
+            $database[$telegram_id]['last_hash'] = md5($output);
         }
-
-        $telegram = new Api($_ENV['TELEGRAM_KEY']);
-        $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
-
-        $database[$telegram_id]['last_hash'] = md5($output);
     }
 
 
