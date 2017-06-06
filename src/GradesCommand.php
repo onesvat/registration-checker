@@ -36,7 +36,7 @@ class GradesCommand extends Command
         curl_setopt($ch, CURLOPT_URL, "https://registration.boun.edu.tr/scripts/stuinflogin.asp");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
-            "user_name={$user['username']}&user_pass={$user['password']}");
+            "user_name={$user->username}&user_pass={$user->password}");
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
