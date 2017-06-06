@@ -55,10 +55,15 @@ class Explorer
 
         $output = $this->fetch->get("http://registration.boun.edu.tr/scripts/stuinfgs.asp?donem=$semester");
 
+
         if ($this->checkIfLogin($output)) {
 
             try {
                 $dom = HtmlDomParser::str_get_html($output);
+
+                if (!$dom)
+                    return false;
+
             } catch (\Exception $e) {
                 return false;
             }
@@ -96,14 +101,14 @@ class Explorer
             if (!$spa_tr)
                 return $grades;
 
-            $spa_txt = $spa_tr->find("td", 2);
+            $spa_txt = $spa_tr->find("td", 2)->plaintext;
 
             $gpa_tr = $table->find("tr", 1);
 
             if (!$gpa_tr)
                 return $grades;
 
-            $gpa_txt = $gpa_tr->find("td", 2);
+            $gpa_txt = $gpa_tr->find("td", 2)->plaintext;
 
             $spa = str_replace(["SPA:", ","], ["", "."], $spa_txt);
             $gpa = str_replace(["GPA*:", ","], ["", "."], $gpa_txt);
