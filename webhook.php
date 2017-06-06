@@ -9,13 +9,15 @@ $dotenv->load();
 
 require  __DIR__ . "/src/StartCommand.php";
 require  __DIR__ . "/src/AuthCommand.php";
+require  __DIR__ . "/src/GradesCommand.php";
 
 
 $telegram = new Api($_ENV['TELEGRAM_KEY']);
 
 $telegram->addCommands([
     StartCommand::class,
-    AuthCommand::class
+    AuthCommand::class,
+    GradesCommand::class
 ]);
 
 $telegram->commandsHandler(true);

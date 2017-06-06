@@ -26,7 +26,8 @@ class AuthCommand extends Command
         else
             $database = [];
 
-        $database[$username] = [
+        $database[$this->update->getMessage()->getFrom()->getId()] = [
+            'telegram_id' => $this->update->getMessage()->getFrom()->getId(),
             'username' => $username,
             'password' => $password,
             'last_hash' => null
