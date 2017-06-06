@@ -39,5 +39,7 @@ foreach ($users as $user) {
         }
     }
 
-    sleep(mt_rand(1, 3));
+    echo $user['username'] . PHP_EOL;
+
+    sleep(mt_rand(5, 15));
 }

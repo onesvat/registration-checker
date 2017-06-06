@@ -39,7 +39,7 @@ class Explorer
             'user_name' => $this->username,
             'user_pass' => $this->password
         ]);
-        echo 'hi';
+
         if (stristr($login_result, "hatakullanici") !== false) {
             return false;
         } else {
