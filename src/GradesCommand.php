@@ -62,9 +62,18 @@ class GradesCommand extends Command
 
         $message = "";
 
-        foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element)
-            $message .= $element->find("td", 0)->plaintext . " " . $element->find("td", 3)->plaintext . "<br/>";
+        foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element) {
+            $course = str_replace("&nbsp;", "", $element->find("td", 0)->plaintext);
+            $grade = str_replace("&nbsp;", "", $element->find("td", 3)->plaintext);
 
-        return $this->replyWithMessage(['text' => $message]);
+            if ($grade == "") {
+                $grade = "NA";
+            }
+
+            $message .= $course . " " . $grade . "<br/>";
+        }
+
+
+        return $this->replyWithMessage(['text' => $message, 'parse_mode' => 'HTML']);
     }
 }
