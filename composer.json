@@ -1,7 +1,13 @@
 {
-    "require": {
-        "sunra/php-simple-html-dom-parser": "^1.5",
-        "irazasyed/telegram-bot-sdk": "^2.2",
-        "vlucas/phpdotenv": "^2.4"
+  "require": {
+    "sunra/php-simple-html-dom-parser": "^1.5",
+    "irazasyed/telegram-bot-sdk": "^2.2",
+    "vlucas/phpdotenv": "^2.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Commands\\": "src/Commands/",
+      "Registration\\": "src/Registration/"
     }
+  }
 }

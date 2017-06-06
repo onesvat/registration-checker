@@ -1,17 +1,15 @@
 <?php
 
+use Commands\AuthCommand;
+use Commands\DeleteCommand;
+use Commands\GradesCommand;
+use Commands\StartCommand;
 use Telegram\Bot\Api;
 
 require __DIR__ . '/vendor/autoload.php';
 
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
-
-require __DIR__ . "/src/StartCommand.php";
-require __DIR__ . "/src/AuthCommand.php";
-require __DIR__ . "/src/GradesCommand.php";
-require __DIR__ . "/src/DeleteCommand.php";
-
 
 $telegram = new Api($_ENV['TELEGRAM_KEY']);
 
