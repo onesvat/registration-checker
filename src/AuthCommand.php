@@ -51,7 +51,8 @@ class AuthCommand extends Command
             'telegram_id' => $this->update->getMessage()->getFrom()->getId(),
             'username' => $username,
             'password' => $password,
-            'last_hash' => null
+            'last_hash' => null,
+            'register_date' => date("Y-m-d H:i:s")
         ];
 
         file_put_contents($_ENV['DATABASE_LOC'], json_encode($database));
