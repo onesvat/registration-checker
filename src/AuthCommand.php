@@ -17,7 +17,28 @@ class AuthCommand extends Command
     {
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        list($username, $password) = explode(" ", $arguments);
+        $parts = explode(" ", $arguments);
+
+        if (count($parts) != 2) {
+            return $this->replyWithMessage(['text' => 'Bad format. Please use /auth [username] [password] to auth. Example: /auth 2010400000 YourFancyPassword']);
+        }
+
+        $username = $parts[0];
+        $password = $parts[1];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://registration.boun.edu.tr/scripts/stuinflogin.asp");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,
+            "user_name={$username}&user_pass={$password}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $output = curl_exec($ch);
+
+        if (stristr($output, "hatakullanici") !== false) {
+            return $this->replyWithMessage(['text' => 'Login failed. Please use /auth [username] [password] to auth. Example: /auth 2010400000 YourFancyPassword']);
+        }
 
         $database_str = file_get_contents($_ENV['DATABASE_LOC']);
 
