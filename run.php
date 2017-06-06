@@ -62,9 +62,10 @@ foreach ($database as $telegram_id => $user) {
 
         $telegram = new Api($_ENV['TELEGRAM_KEY']);
         $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
+
+        $users[$telegram_id]['last_hash'] = md5($output);
     }
 
-    $users[$telegram_id]['last_hash'] = md5($output);
 
 }
 
