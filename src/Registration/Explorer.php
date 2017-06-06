@@ -97,6 +97,10 @@ class Explorer
             return $this->login();
         }
 
+        if (stristr($output, "a new password policy") !== false) {
+            return false;
+        }
+
         return true;
     }
 }
