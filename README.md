@@ -14,6 +14,10 @@ Example: /auth 2010400000 YourFancyPassword
 
 Gets the current grades of your id
 
+### /delete
+
+Delete user data permanently
+
 
 ## Setup
 
