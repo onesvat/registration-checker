@@ -15,7 +15,7 @@ if ($database_str)
 else
     $database = [];
 
-foreach ($database as $user) {
+foreach ($database as $telegram_id => $user) {
 
     $cookie_location = tempnam("/tmp", "registration-");
 
@@ -63,6 +63,9 @@ foreach ($database as $user) {
         $telegram = new Api($_ENV['TELEGRAM_KEY']);
         $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
     }
+
+    $users[$telegram_id]['last_hash'] = md5($output);
+
 }
 
 file_put_contents($_ENV['DATABASE_LOC'], json_encode($database));
