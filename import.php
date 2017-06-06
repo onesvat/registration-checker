@@ -15,7 +15,7 @@ else
 $pdo = \Registration\Database::getPdo();
 
 foreach ($database as $item) {
-    $stmt = $pdo->prepare("INSERT INTO users (telegram_id, username, password, updated_at, created_at) (?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users (telegram_id, username, password, updated_at, created_at) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([
         $item['telegram_id'],
         $item['username'],

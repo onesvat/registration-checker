@@ -39,7 +39,7 @@ class AuthCommand extends Command
             $stmt = $pdo->prepare("DELETE FROM users WHERE username = ?");
             $stmt->execute([$username]);
 
-            $stmt = $pdo->prepare("INSERT INTO users (telegram_id, username, password, updated_at, created_at) (?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO users (telegram_id, username, password, updated_at, created_at) VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([
                 $this->update->getMessage()->getFrom()->getId(),
                 $username,
