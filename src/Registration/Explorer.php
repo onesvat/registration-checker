@@ -86,7 +86,31 @@ class Explorer
                 $grades['courses'][$course] = $grade;
             }
 
-            $dom->find("table", 2)->find("tr");
+            $table = $dom->find("table", 2);
+
+            if (!$table)
+                return $grades;
+
+            $spa_tr = $table->find("tr", 0);
+
+            if (!$spa_tr)
+                return $grades;
+
+            $spa_txt = $spa_tr->find("td", 2);
+
+            $gpa_tr = $table->find("tr", 1);
+
+            if (!$gpa_tr)
+                return $grades;
+
+
+            $gpa_txt = $gpa_tr->find("td", 2);
+
+            $spa = str_replace(["SPA:", ","], ["", "."], $spa_txt);
+            $gpa = str_replace(["GPA*:", ","], ["", "."], $gpa_txt);
+
+            $grades['gpa'] = $gpa;
+            $grades['spa'] = $spa;
 
             return $grades;
         }
