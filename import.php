@@ -21,6 +21,6 @@ foreach ($database as $item) {
         $item['username'],
         $item['password'],
         null,
-        $item['register_date']
+        (array_key_exists('register_date', $item) ? $item['register_date'] : null)
     ]);
 }
