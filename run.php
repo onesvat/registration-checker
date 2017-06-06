@@ -50,7 +50,5 @@ foreach ($users as $user) {
         }
     }
 
-    echo $user['username'] . PHP_EOL;
-
     sleep(mt_rand(1, 2));
 }
