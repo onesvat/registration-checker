@@ -1,0 +1,7 @@
+{
+    "require": {
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "irazasyed/telegram-bot-sdk": "^2.2",
+        "vlucas/phpdotenv": "^2.4"
+    }
+}
