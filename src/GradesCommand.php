@@ -1,5 +1,6 @@
 <?php
 
+use Sunra\PhpSimple\HtmlDomParser;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
@@ -57,6 +58,13 @@ class GradesCommand extends Command
         $output = curl_exec($ch);
         curl_close($ch);
 
-        return $this->replyWithMessage(['text' => $output]);
+        $dom = HtmlDomParser::str_get_html($output);
+
+        $message = "";
+
+        foreach ($dom->find('table', 1)->find("tr[class=recmenu]") as $element)
+            $message .= $element->find("td", 0)->plaintext . " " . $element->find("td", 3)->plaintext . "<br/>";
+
+        return $this->replyWithMessage(['text' => $message]);
     }
 }
