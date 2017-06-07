@@ -26,9 +26,9 @@ class Fetch
         $this->cookie_file = $cookie_file;
     }
 
-    public function get($url)
+    public function get($url, $follow = false)
     {
-        return $this->request("get", $url);
+        return $this->request("get", $url, "", $follow);
     }
 
     public function post($url, $params)
@@ -36,7 +36,7 @@ class Fetch
         return $this->request("post", $url, http_build_query($params));
     }
 
-    private function request($type, $url, $data = "")
+    private function request($type, $url, $data = "", $follow = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -66,6 +66,9 @@ class Fetch
         curl_setopt($ch, CURLOPT_INTERFACE, "193.70.100.240");
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        if ($follow)
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         $output = curl_exec($ch);
         curl_close($ch);

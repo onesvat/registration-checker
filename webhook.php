@@ -1,6 +1,7 @@
 <?php
 
 use Commands\AuthCommand;
+use Commands\BuCardCommand;
 use Commands\DeleteCommand;
 use Commands\GradesCommand;
 use Commands\StartCommand;
@@ -17,6 +18,7 @@ $telegram->addCommands([
     StartCommand::class,
     AuthCommand::class,
     GradesCommand::class,
+    BuCardCommand::class,
     DeleteCommand::class
 ]);
 

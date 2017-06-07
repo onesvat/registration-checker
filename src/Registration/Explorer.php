@@ -123,6 +123,62 @@ class Explorer
 
     }
 
+    public function fetchBuCardDetails()
+    {
+        $this->login();
+
+        $output = $this->fetch->get("http://registration.boun.edu.tr/scripts/buis_gate.asp?p=BUCardDiningLogs", true);
+
+
+        if ($this->checkIfLogin($output)) {
+
+            try {
+                $dom = HtmlDomParser::str_get_html($output);
+
+                if (!$dom)
+                    return false;
+
+            } catch (\Exception $e) {
+                return false;
+            }
+
+
+            $cards = [];
+
+            try {
+                $table = $dom->find('table[class=tblCards]', 0);
+
+                if (!$table)
+                    return false;
+
+                $elements = $table->find("tr");
+            } catch (\Exception $e) {
+                return false;
+            }
+
+            $header = true;
+
+            foreach ($elements as $element) {
+
+                if ($header) {
+                    $header = false;
+                    continue;
+                }
+
+                $number = $element->find("th", 1)->plaintext;
+                $balance = $element->find("th", 5)->plaintext;
+
+                $cards[$number] = $balance;
+            }
+
+            return $cards;
+        }
+
+        return [];
+
+    }
+
+
     private function checkIfLogin($output)
     {
         if (stristr($output, "studententry") !== false) {
