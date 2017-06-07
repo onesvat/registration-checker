@@ -46,6 +46,9 @@ foreach ($users as $user) {
 
             }
 
+            $stmt = $pdo->prepare("UPDATE users SET updated_at = ? WHERE telegram_id = ?");
+            $stmt->execute([date("Y-m-d H:i:s"), $user['telegram_id']]);
+
             $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
         }
     }

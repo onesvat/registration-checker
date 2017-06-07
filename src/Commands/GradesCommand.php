@@ -40,6 +40,11 @@ class GradesCommand extends Command
             return $this->replyWithMessage(['text' => 'Either you do not have any courses, or your credentials are wrong. Try /auth again']);
         }
 
+        // We have succefully check grades
+
+        $stmt = $pdo->prepare("UPDATE users SET updated_at = ? WHERE telegram_id = ?");
+        $stmt->execute([date("Y-m-d H:i:s"), $this->update->getMessage()->getFrom()->getId()]);
+
         $message = "";
 
         foreach ($grades['courses'] as $course => $grade) {
