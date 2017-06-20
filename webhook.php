@@ -4,6 +4,7 @@ use Commands\AuthCommand;
 use Commands\BuCardCommand;
 use Commands\DeleteCommand;
 use Commands\GradesCommand;
+use Commands\ScheduleCommand;
 use Commands\StartCommand;
 use Telegram\Bot\Api;
 
@@ -18,6 +19,7 @@ $telegram->addCommands([
     StartCommand::class,
     AuthCommand::class,
     GradesCommand::class,
+    ScheduleCommand::class,
     BuCardCommand::class,
     DeleteCommand::class
 ]);

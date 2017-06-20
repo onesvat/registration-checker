@@ -32,7 +32,6 @@ class Explorer
         $this->fetch = new Fetch("/tmp/$username.cookie", "/tmp/$username.cookie");
     }
 
-
     public function login()
     {
         $login_result = $this->fetch->post("https://registration.boun.edu.tr/scripts/stuinflogin.asp", [
@@ -123,6 +122,114 @@ class Explorer
 
     }
 
+    public function fetchSchedule()
+    {
+        $this->login();
+
+        $output = $this->fetch->get("http://registration.boun.edu.tr/scripts/stuinfsc.asp");
+
+
+        if ($this->checkIfLogin($output)) {
+
+            try {
+                $dom = HtmlDomParser::str_get_html($output);
+
+                if (!$dom)
+                    return false;
+
+            } catch (\Exception $e) {
+                return false;
+            }
+
+
+            $courses = [];
+
+            try {
+                $table = $dom->find('table', 1);
+
+                if (!$table)
+                    return false;
+            } catch (\Exception $e) {
+                return false;
+            }
+
+            try {
+                $elements = $table->find('tr[class=recmenu]');
+
+                if (!$elements)
+                    return false;
+            } catch (\Exception $e) {
+                return false;
+            }
+
+
+            foreach ($elements as $element) {
+
+                $schedule = [];
+
+                $name = $element->find("td", 0)->plaintext;
+                $days_hours = $element->find("td", 1)->plaintext;
+                $locations_text = $element->find("td", 2)->plaintext;
+
+                list($days_text, $hours_text) = explode("&nbsp;", $days_hours);
+
+                $days_text = str_replace('Th', 'X', $days_text);
+                $days_text = str_replace(['M', 'T', 'W', 'X', 'F'], [0, 1, 2, 3, 4], $days_text);
+
+                $days = str_split($days_text);
+                $hours = str_split($hours_text);
+
+
+                $locations_text = str_replace('&nbsp;', '', $locations_text);
+
+                $locations = array_map(function ($elem) {
+                    return trim($elem);
+                }, explode("|", $locations_text));
+
+
+                for ($i = 0; $i < count($days); $i++) {
+
+                    $key = $days[$i] . "-" . $locations[$i];
+
+                    if (!array_key_exists($key, $schedule)) {
+                        $schedule[$key] = [
+                            'day' => (int)$days[$i],
+                            'location' => $locations[$i],
+                            'hours' => []
+                        ];
+                    }
+
+                    $schedule[$key]['hours'][] = (int)$hours[$i];
+                }
+
+                $day_names = [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday'
+                ];
+
+                foreach ($schedule as $key => $value) {
+
+                    $schedule[$key]['day_text'] = $day_names[$value['day']];
+                    $schedule[$key]['start_text'] = sprintf('%01d', min($value['hours']) + 8) . ":00";
+                    $schedule[$key]['end_text'] = sprintf('%01d', max($value['hours']) + 8) . ":50";
+                }
+
+
+                $courses[] = [
+                    'name' => $name,
+                    'schedule' => $schedule
+                ];
+            }
+
+            return $courses;
+        }
+    }
+
     public function fetchBuCardDetails()
     {
         $this->login();
@@ -177,7 +284,6 @@ class Explorer
         return [];
 
     }
-
 
     private function checkIfLogin($output)
     {
