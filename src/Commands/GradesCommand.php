@@ -33,8 +33,8 @@ class GradesCommand extends Command
         }
 
         $explorer = new Explorer($user['username'], $user['password']);
-
-        $grades = $explorer->fetchGrades("2016/2017-2");
+        $term = self::getCurrentTerm();
+        $grades = $explorer->fetchGrades($term);
 
         if (count($grades['courses']) == 0) {
             return $this->replyWithMessage(['text' => 'Either you do not have any courses, or your credentials are wrong. Try /auth again']);
@@ -56,5 +56,25 @@ class GradesCommand extends Command
 
 
         return $this->replyWithMessage(['text' => "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
+    }
+
+    public static function getCurrentTerm()
+    {
+        $month = date('m');
+
+        $previousYear = date('Y', strtotime('-1 years'));
+        $currentYear = date('Y');
+        $nextYear = date('Y', strtotime('+1 years'));
+
+
+        if ($month > 8) {
+            return $currentYear . '/' . $nextYear . '-1';
+        } elseif ($month < 2) {
+            return $previousYear . '/' . $currentYear . '-1';
+        } elseif ($month < 7) {
+            return $previousYear . '/' . $currentYear . '-2';
+        } else {
+            return $previousYear . '/' .  $currentYear . '-3';
+        }
     }
 }

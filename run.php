@@ -2,6 +2,7 @@
 
 use Sunra\PhpSimple\HtmlDomParser;
 use Telegram\Bot\Api;
+use Commands;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -16,9 +17,9 @@ $stmt->execute();
 $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 foreach ($users as $user) {
-
     $explorer = new \Registration\Explorer($user['username'], $user['password']);
-    $grades = $explorer->fetchGrades("2016/2017-2");
+    $term = GradesCommand::getCurrentTerm();
+    $grades = $explorer->fetchGrades($term);
 
     if ($grades === false) {
         continue;
@@ -33,7 +34,6 @@ foreach ($users as $user) {
         $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
     } else {
         if ($hash != $user['last_hash']) {
-
             $message = "";
 
             foreach ($grades['courses'] as $course => $grade) {
@@ -46,7 +46,6 @@ foreach ($users as $user) {
             try {
                 $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
             } catch (\Exception $e) {
-
             }
 
             $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
