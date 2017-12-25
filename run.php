@@ -30,6 +30,19 @@ foreach ($users as $user) {
     $stmt = $pdo->prepare("UPDATE users SET updated_at = ? WHERE telegram_id = ?");
     $stmt->execute([date("Y-m-d H:i:s"), $user['telegram_id']]);
 
+    if ($user['last_term'] != $term) {
+        $stmt = $pdo->prepare("UPDATE users SET last_term = ?, last_hash = null WHERE telegram_id = ?");
+        $stmt->execute([$term, $user['telegram_id']]);
+
+        try {
+            $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Welcome to new term: ". $term ."</b>\n" . "Grade changes will be detected automatically.", 'parse_mode' => 'HTML']);
+        } catch (\Exception $e) {
+            continue;
+        }
+
+        continue;
+    }
+
     if ($user['last_hash'] == null) {
         $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
     } else {
@@ -46,6 +59,7 @@ foreach ($users as $user) {
             try {
                 $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Grade Changed!!!</b>\n" . "<pre>" . $message . "</pre>", 'parse_mode' => 'HTML']);
             } catch (\Exception $e) {
+                continue;
             }
 
             $pdo->exec("UPDATE users SET last_hash = '$hash' WHERE id = {$user['id']}");
