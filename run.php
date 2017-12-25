@@ -2,7 +2,7 @@
 
 use Sunra\PhpSimple\HtmlDomParser;
 use Telegram\Bot\Api;
-use Commands;
+use Commands\GradesCommand;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -35,7 +35,7 @@ foreach ($users as $user) {
         $stmt->execute([$term, $user['telegram_id']]);
 
         try {
-            $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "<b>Welcome to new term: ". $term ."</b>\n" . "Grade changes will be detected automatically.", 'parse_mode' => 'HTML']);
+            $telegram->sendMessage(['chat_id' => $user['telegram_id'], 'text' => "Welcome to new term: <b>". $term ."</b>\n" . "Grade changes will be detected automatically.", 'parse_mode' => 'HTML']);
         } catch (\Exception $e) {
             continue;
         }
