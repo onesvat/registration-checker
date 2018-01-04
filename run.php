@@ -68,6 +68,4 @@ foreach ($users as $user) {
             }
         }
     }
-
-    sleep(mt_rand(1, 2));
 }
