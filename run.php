@@ -21,7 +21,7 @@ foreach ($users as $user) {
     $term = GradesCommand::getCurrentTerm();
     $grades = $explorer->fetchGrades($term);
 
-    if ($grades === false) {
+    if ($grades === false || !array_key_exists('courses', $grades)) {
         continue;
     }
 
